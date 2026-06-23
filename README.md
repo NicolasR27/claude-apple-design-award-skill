@@ -85,6 +85,33 @@ or point it at a project:
 The skill triggers on mentions of "Apple Design Award", "award-worthy", "design award
 readiness", or a high-bar craft/polish review.
 
+### What you'll need
+
+- **A buildable Xcode project** for the full review. Run the skill from (or point it at) the app's
+  folder so it can find the project/workspace and a scheme. A description-only review works too — it
+  just skips the live-driving and labels those scores runtime-unverified.
+- **[XcodeBuildMCP](https://xcodebuildmcp.com)** so Claude Code can build and drive the app. For the
+  interaction/accessibility checks it drives the UI, which uses XcodeBuildMCP's **UI-automation** tools
+  — these aren't on by default, so enable them once with `XCODEBUILDMCP_GROUP_UI_AUTOMATION=true` (see
+  [configuration](https://xcodebuildmcp.com/docs/configuration)). Without them you still get a
+  screenshot-based review.
+- **A simulator** for the target platform. The skill picks/boots one for you; first run may prompt you
+  to set the project, scheme, and simulator as session defaults.
+
+### What you get back
+
+A single report: a one-line verdict, your **category bet**, a **Runtime:** line (what was driven, or why
+not), a 6-criterion **scorecard** (0–3 with `file:line` + on-screen evidence), any **anti-patterns** that
+cap a score, and a **prioritized action plan** (clear the gates → make one thing extraordinary → round up
+the floor). The review is read-only; if you then ask it to *implement* a fix, it'll edit the code.
+
+### Tips
+
+- Tell it your app's **one-sentence purpose** and the **standout feature** up front — it sharpens the
+  category bet.
+- Ask it to **focus on one criterion** (e.g. "just audit Inclusivity") for a faster, deeper pass.
+- Ask it to **walk a specific flow** (onboarding, the delight moment) if that's what you're polishing.
+
 ## Repository layout
 
 ```
