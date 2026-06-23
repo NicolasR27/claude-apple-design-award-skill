@@ -8,6 +8,13 @@ report and a prioritized action plan to get it closer to award-worthy.
 It's not a generic Human Interface Guidelines linter — it's a craft coach calibrated to the bar Apple
 actually rewards.
 
+> **What this really is.** Apple's judging is private and subjective, so nothing here predicts a win.
+> What it *does* do well is the verifiable part: it builds and drives your app and reports observed
+> facts — missing accessibility labels, undrivable flows, dropped frames, taps-to-value, broken Dynamic
+> Type / dark mode. Think of it as a **runtime accessibility + craft auditor organized around Apple's
+> award criteria.** The objective findings are the product; the 0–3 criterion scores are an informed
+> read on top of them, each tagged `[observed]` (a fact) or `[judgment]` (an opinion).
+
 ## Quick start
 
 ```sh
@@ -128,6 +135,11 @@ Apple's actual judging is **private and subjective**. This skill encodes a *cura
 traits common to past winners — it is **not** an official rubric and **cannot predict a win**. The
 tiered pattern frequencies are qualitative coaching emphasis, not measured statistics. Winner data
 reflects Apple's published lists through the 2026 cycle (compiled 2026-06-11).
+
+So weight the output accordingly: the **`[observed]`** findings (missing accessibility labels,
+undrivable flows, dropped frames, taps-to-value, broken Dynamic Type / dark mode) are verifiable and
+worth fixing whether or not you ever submit for an award. The **`[judgment]`** scores are one informed
+opinion about craft — useful direction, not a verdict. Lead with the facts; hold the opinions loosely.
 
 ## Sources
 

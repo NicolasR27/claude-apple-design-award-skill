@@ -26,6 +26,15 @@ performant, focused) everywhere else, with **zero anti-patterns**.
 The skill outputs a scored gap report (0–3 per criterion), names the app's best category bet, and
 gives a prioritized action plan to close the gap to award-worthy.
 
+**What this is — and isn't.** Apple's judging is private, subjective, and shaped by narrative and
+timing; nothing here predicts a win, and you should never present a score as odds of winning. What this
+skill *actually does well* is the verifiable part: it builds and drives the app and reports
+**observed facts** — missing accessibility labels, undrivable flows, dropped frames, taps-to-value,
+broken Dynamic Type/dark mode. Treat it as a **runtime accessibility + craft auditor organized around
+Apple's award criteria.** The objective findings are the product; the criterion scores are an informed
+read on top of them, not a verdict. When evidence is observed, say so; when a score is a judgment call,
+label it as one rather than dressing it up as measurement.
+
 ## When this skill activates
 
 - The user mentions "Apple Design Award", "design award", "award-worthy", "make this
@@ -122,6 +131,13 @@ Step 3 (screen + element + what you saw/measured) — the **gap** to the next le
 highest-leverage fix**. Prefer runtime evidence over code inference wherever the two could disagree
 (e.g. "the code adds a spring animation" vs. "the transition visibly stuttered on screen").
 
+**Mark the basis of every score.** Tag each one `[observed]` when it rests on a verifiable runtime/code
+fact (a missing label, a measured tap count, a dropped-frame recording) or `[judgment]` when it's a
+subjective craft read (does the visual identity feel distinctive, does the delight moment *land*). Don't
+blur the two — an `[observed]` 0 on Inclusivity ("three buttons have no accessibility label, here they
+are") is a fact to fix; a `[judgment]` 2 on Visuals is one informed opinion. The objective findings
+carry the report; the judgments are clearly flagged as opinion.
+
 ### Step 6 — Flag anti-patterns
 Scan for the disqualifiers in KB Section 4 (generic/templated UI, non-native/web-wrapper feel,
 feature bloat, accessibility-as-afterthought, jank/hangs, dark patterns, gimmicky tech, inconsistent
@@ -136,20 +152,29 @@ Produce the report in exactly this structure:
 ```
 # Apple Design Award Readiness Review — <App Name>
 
-**Verdict:** <one line — e.g. "Strong contender in Interaction; two gating anti-patterns to fix first.">
+**Verdict:** <one line — e.g. "Strong on Interaction; two gating accessibility defects to fix first.">
 **Category bet:** <criterion> — <why this is the app's best shot>
 **Runtime:** <"Driven live on <simulator> — flows walked: …" | "Not run (<reason>); scores below are static-only and runtime-unverified.">
-**Overall:** <sum>/18  ( ≥1 on all six, no 0s = contention floor )
+**Overall:** <sum>/18  ( ≥1 on all six, no 0s = contention floor — a rough temperature, not odds of winning )
+
+## What was observed (verifiable)
+Lead with the facts the review actually proved at runtime/in code — the part you can trust without
+trusting our taste:
+- <e.g. "3 controls on Home have no accessibility label (UNLABELED in snapshot_ui) — undrivable & invisible to VoiceOver">
+- <e.g. "Onboarding → first value took 7 taps"; "Settings push transition dropped frames in the recording"; "layout truncates at AX-XXXL Dynamic Type">
+(or "Not runtime-verified — app couldn't be built/driven; findings below are from code only.")
 
 ## Scorecard
-| Criterion          | Score | Evidence | Top fix |
-|--------------------|:-----:|----------|---------|
-| Inclusivity        |  x/3  | …        | …       |
-| Delight & Fun      |  x/3  | …        | …       |
-| Interaction        |  x/3  | …        | …       |
-| Social Impact      |  x/3  | …        | …       |
-| Visuals & Graphics |  x/3  | …        | …       |
-| Innovation         |  x/3  | …        | …       |
+Each score is tagged `[observed]` (rests on a verifiable fact) or `[judgment]` (a subjective craft read).
+
+| Criterion          | Score | Basis | Evidence | Top fix |
+|--------------------|:-----:|:-----:|----------|---------|
+| Inclusivity        |  x/3  | obs/judg | …     | …       |
+| Delight & Fun      |  x/3  | obs/judg | …     | …       |
+| Interaction        |  x/3  | obs/judg | …     | …       |
+| Social Impact      |  x/3  | obs/judg | …     | …       |
+| Visuals & Graphics |  x/3  | obs/judg | …     | …       |
+| Innovation         |  x/3  | obs/judg | …     | …       |
 
 ## Anti-patterns found
 - <each one, with file:line and why it caps a score> (or "None — clears the cross-cutting gate.")
@@ -159,15 +184,20 @@ Produce the report in exactly this structure:
 2. …
 (Group as: "Make extraordinary" = the bet, then "Clear the gates" = anti-patterns + any 0/1s.)
 
-## Would a judge remember it?
-<2–3 sentences: the honest case for/against, and the single thing that would make it memorable.>
+## The honest read (opinion, not a prediction)
+<2–3 sentences: the subjective case for/against and the single thing that would make it memorable —
+explicitly framed as a judgment call, not a forecast of whether it wins.>
 ```
 
 ## Notes & honesty guardrails
 
 - Apple's actual judging is **private and subjective**. This skill encodes a *curated approximation*
-  of traits common to past winners, not an official rubric or a prediction of a win. Say so if the
-  user treats the score as a guarantee.
+  of traits common to past winners, not an official rubric or a prediction of a win. Never present the
+  score as odds of winning — if the user reads it that way, correct it.
+- **Where the value actually is:** the `[observed]` findings (missing labels, undrivable flows, dropped
+  frames, taps-to-value, broken Dynamic Type/dark mode) are verifiable and worth acting on regardless of
+  any award. The `[judgment]` scores are one informed opinion about craft — useful direction, not truth.
+  Lead with the former; hold the latter loosely.
 - Frequencies/tiers in the KB are qualitative coaching emphasis, not measured statistics.
 - The skill reads code *and* drives the running app (build + simulator UI automation) by default — but
   it does not modify the app. If the user then asks you to *implement* fixes, you may edit — but keep
