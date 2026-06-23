@@ -15,11 +15,17 @@ Point it at a SwiftUI/UIKit codebase (or just describe your app) and ask for an 
 1. **Maps your app** — scope, platforms, and which Apple frameworks you use.
 2. **Loads the knowledge base** — Apple's verbatim criteria, winners by category, the recurring
    patterns, and the anti-patterns that keep apps out of contention.
-3. **Picks your "category bet"** — the one Apple Design Award category your app is or could be *extraordinary* in.
-4. **Scores all 6 criteria 0–3** with concrete evidence (`file:line`) and the highest-leverage fix.
-5. **Flags anti-patterns** that cap your score (generic UI, jank, dark patterns, accessibility-as-
+3. **Builds and drives the running app** — launches it on a simulator and walks the real UI through its
+   accessibility tree (via [XcodeBuildMCP](https://xcodebuildmcp.com)), so interaction, animation,
+   responsiveness, and accessibility are judged *as experienced*, not inferred from source. (The
+   accessibility tree is the same interface VoiceOver uses to *read* the app and the reviewer uses to
+   *drive* it — so an inaccessible app is, by construction, an untestable one.)
+4. **Picks your "category bet"** — the one Apple Design Award category your app is or could be *extraordinary* in.
+5. **Scores all 6 criteria 0–3** with concrete evidence (`file:line` + on-screen observations) and the
+   highest-leverage fix.
+6. **Flags anti-patterns** that cap your score (generic UI, jank, dark patterns, accessibility-as-
    afterthought, …).
-6. **Outputs an action plan** ordered as: clear the gates → make one thing extraordinary → round up
+7. **Outputs an action plan** ordered as: clear the gates → make one thing extraordinary → round up
    the floor.
 
 The core thesis, distilled from ~70+ winners: **award-winning apps pair an *emotional* quality
@@ -38,11 +44,18 @@ Clone and symlink (or copy) into your Claude Code skills directory:
 
 ```sh
 git clone https://github.com/NicolasR27/claude-apple-design-award-skill.git
-ln -s "$(pwd)/claude-apple-design-award-skill" ~/.claude/commands/apple-design-award
+ln -s "$(pwd)/claude-apple-design-award-skill" ~/.claude/skills/apple-design-award
 ```
 
-The skill folder name must be `apple-design-award` (matching `name:` in `SKILL.md`). Copying the
-folder instead of symlinking works too.
+The skill folder name must be `apple-design-award` (matching `name:` in `SKILL.md`), and it must live
+under `~/.claude/skills/` (skills, not commands). Copying the folder instead of symlinking works too.
+
+### Runtime testing (recommended)
+
+To get the full review — driving the live app, not just reading code — install
+[XcodeBuildMCP](https://xcodebuildmcp.com) so Claude Code can build the app on a simulator and drive
+its UI through the accessibility tree. Without it, the skill still runs but falls back to static code
+review and labels the interaction/animation/accessibility scores as runtime-unverified.
 
 ## Usage
 

@@ -1,10 +1,10 @@
 ---
 name: apple-design-award
-description: Coach an iOS/iPadOS/macOS/watchOS/visionOS app toward Apple Design Award quality. Reviews code and product against the 6 official Apple Design Award criteria (Inclusivity, Delight & Fun, Interaction, Social Impact, Visuals & Graphics, Innovation) using patterns distilled from real Apple Design Award winners, then returns a scored gap report and prioritized action plan. Use when the user mentions Apple Design Award, "award-worthy", design award readiness, or wants a polish/craft review against Apple's bar.
+description: Coach an iOS/iPadOS/macOS/watchOS/visionOS app toward Apple Design Award quality. Reviews code AND the running app — building it on a simulator and driving the live UI through its accessibility tree (XcodeBuildMCP) — against the 6 official Apple Design Award criteria (Inclusivity, Delight & Fun, Interaction, Social Impact, Visuals & Graphics, Innovation) using patterns distilled from real Apple Design Award winners, then returns a scored gap report and prioritized action plan. Use when the user mentions Apple Design Award, "award-worthy", design award readiness, or wants a polish/craft review against Apple's bar.
 license: MIT
 metadata:
   author: Nicolas Rios
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # Apple Design Award Coach
@@ -51,6 +51,9 @@ Establish what you're reviewing before judging it:
   platforms, the standout technical feature, and one screenshot/flow if available.
 - Determine the **focused scope**: what is the one thing this app does? (Breadth-without-depth is an
   anti-pattern — see KB Section 4.)
+- Note what's needed to **run** it: the Xcode project/workspace, scheme, and a target simulator. You'll
+  build and drive the live app in Step 3 — static reading alone cannot judge interaction, animation,
+  responsiveness, or accessibility-in-practice, which are the heart of an Apple Design Award.
 
 ### Step 2 — Load reference materials
 Read the three reference files before scoring (do not score from memory):
@@ -61,18 +64,55 @@ Read the three reference files before scoring (do not score from memory):
 - `references/scoring-rubric.md` — the 0–3 scale, the "category bet" method, and how to combine
   scores into a verdict.
 
-### Step 3 — Identify the category bet
+### Step 3 — Run and drive the live app (runtime verification)
+**This is the step that separates this skill from a code linter.** An Apple Design Award is awarded for
+how an app *feels in the hand* — interaction, animation, responsiveness, haptics, and accessibility
+*as actually experienced*. None of that is provable from source. Build it and drive it.
+
+Use **XcodeBuildMCP** (preferred over raw `xcodebuild`):
+1. `session_show_defaults` → if project/scheme/simulator aren't set, `discover_projs` / `list_schemes` /
+   `list_sims` and `session_set_defaults`. Then `build_run_sim` to launch on a booted simulator.
+2. **Read the accessibility tree** with `snapshot_ui`. This is the primary lens — it returns the live
+   accessibility hierarchy (labels, traits, frames, actions). Two things at once:
+   - It is *the only way to drive the UI programmatically* — every `tap`/`swipe`/`type` targets an
+     element by its accessibility identifier or frame from this snapshot.
+   - It is *also the audit*. **An element missing from the snapshot, or present with no label/role, is
+     invisible to VoiceOver AND untappable by automation — the same defect.** This is the load-bearing
+     insight: accessibility is not a separate checklist item you read off the code; it is the interface
+     through which the app is both *used by assistive tech* and *tested here*. An app you cannot drive
+     via `snapshot_ui` is, by that very fact, failing Inclusivity.
+3. **Capture visuals** with `screenshot` at each key screen — for Visuals & Graphics (identity,
+   cohesion, empty/loading/dark-mode states) and for the report's evidence.
+4. **Drive the core flow** the app is built around (the "category bet" flow): walk onboarding, perform
+   the primary task, trigger the intended delight moment. Observe latency, animation smoothness, and
+   whether feedback is immediate. Use `record_sim_video` for an animation/transition-heavy flow.
+5. **Exercise accessibility in practice** where supported: re-`snapshot_ui` after toggling state to
+   confirm labels update; check Dynamic Type and dark mode via simulator appearance settings; confirm
+   no control is reachable only by an unlabeled tap.
+
+Record runtime findings as evidence with the same rigor as code: name the screen, the element (its
+accessibility id/label or "UNLABELED"), and what you observed.
+
+**If the app cannot be built or run** (no project, won't compile, description-only review, or
+XcodeBuildMCP/simulator unavailable): say so explicitly in the report, fall back to static evidence,
+and flag that the interaction/animation/accessibility scores are *unverified at runtime* — this is
+itself a finding, because **an app that can't be built and driven cannot be award-credible**, and an
+app with no accessibility identifiers is the most common reason a build can't be driven.
+
+### Step 4 — Identify the category bet
 Pick the **one** Apple Design Award category this app is or could be *extraordinary* in (its strongest, most
 differentiated dimension). State why. The action plan will concentrate firepower here, because
 winners win on one signature dimension, not on being uniformly good.
 
-### Step 4 — Score each criterion 0–3
+### Step 5 — Score each criterion 0–3
 For all six criteria (Inclusivity, Delight & Fun, Interaction, Social Impact, Visuals & Graphics,
 Innovation), walk the relevant checklist items and assign 0–3 per the rubric. For each score,
-record: concrete **evidence** (with `file:line` where applicable), the **gap** to the next level,
-and the **single highest-leverage fix**.
+record: concrete **evidence** — `file:line` for code-derived findings *and* runtime observations from
+Step 3 (screen + element + what you saw/measured) — the **gap** to the next level, and the **single
+highest-leverage fix**. Prefer runtime evidence over code inference wherever the two could disagree
+(e.g. "the code adds a spring animation" vs. "the transition visibly stuttered on screen").
 
-### Step 5 — Flag anti-patterns
+### Step 6 — Flag anti-patterns
 Scan for the disqualifiers in KB Section 4 (generic/templated UI, non-native/web-wrapper feel,
 feature bloat, accessibility-as-afterthought, jank/hangs, dark patterns, gimmicky tech, inconsistent
 visual language, weak onboarding, ignored platform surfaces). Any present anti-pattern **caps** the
@@ -88,6 +128,7 @@ Produce the report in exactly this structure:
 
 **Verdict:** <one line — e.g. "Strong contender in Interaction; two gating anti-patterns to fix first.">
 **Category bet:** <criterion> — <why this is the app's best shot>
+**Runtime:** <"Driven live on <simulator> — flows walked: …" | "Not run (<reason>); scores below are static-only and runtime-unverified.">
 **Overall:** <sum>/18  ( ≥1 on all six, no 0s = contention floor )
 
 ## Scorecard
@@ -118,8 +159,11 @@ Produce the report in exactly this structure:
   of traits common to past winners, not an official rubric or a prediction of a win. Say so if the
   user treats the score as a guarantee.
 - Frequencies/tiers in the KB are qualitative coaching emphasis, not measured statistics.
-- The skill reads code by default. If the user then asks you to *implement* fixes, you may edit —
-  but keep the review itself read-only and evidence-based.
+- The skill reads code *and* drives the running app (build + simulator UI automation) by default — but
+  it does not modify the app. If the user then asks you to *implement* fixes, you may edit — but keep
+  the review itself non-destructive and evidence-based.
+- Runtime driving needs XcodeBuildMCP and a simulator. If they're unavailable, degrade gracefully per
+  Step 3 and label interaction/animation/accessibility scores as runtime-unverified rather than guessing.
 
 ## Resources
 
