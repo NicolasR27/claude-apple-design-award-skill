@@ -9,7 +9,7 @@ criteria → winners → patterns → anti-patterns. Sources at the end.
 
 ---
 
-## 0. What the ADA is
+## 0. What the Apple Design Award is
 
 The Apple Design Awards honor "best-in-class apps and games" for **excellence in design, innovation,
 ingenuity, and technical achievement**. Each year Apple names a pool of **finalists** (≈36 in 2023/2025;
@@ -230,7 +230,7 @@ A coach should flag any of these; each **caps** the affected criterion at 0–1.
 - Apple Newsroom 2020: https://www.apple.com/newsroom/2020/06/apple-honors-eight-developers-with-annual-apple-design-awards/
 - Apple Newsroom 2019: https://www.apple.com/newsroom/2019/06/apple-design-awards-celebrate-best-in-class-design-for-apps-and-games/
 - Per-year finalist/winner pages: developer.apple.com/design/awards/2024..2020/
-- ADA history/structure: https://en.wikipedia.org/wiki/Apple_Design_Awards
+- Apple Design Award history/structure: https://en.wikipedia.org/wiki/Apple_Design_Awards
 - Coverage: TechCrunch, MacStories, MacRumors, 9to5Mac, Tom's Guide
 
 _Research compiled 2026-06-11. 2026 figures reflect the live awards page at that time._

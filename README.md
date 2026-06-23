@@ -1,8 +1,8 @@
 # Apple Design Award Coach — a Claude Code skill
 
 A [Claude Code](https://claude.com/claude-code) skill that reviews an Apple-platform app
-(iOS / iPadOS / macOS / watchOS / visionOS) against the **6 official Apple Design Award (ADA)
-criteria** and the **patterns shared by real ADA winners (2019–2026)**, then returns a scored gap
+(iOS / iPadOS / macOS / watchOS / visionOS) against the **6 official Apple Design Award
+criteria** and the **patterns shared by real Apple Design Award winners (2019–2026)**, then returns a scored gap
 report and a prioritized action plan to get it closer to award-worthy.
 
 It's not a generic Human Interface Guidelines linter — it's a craft coach calibrated to the bar Apple
@@ -10,12 +10,12 @@ actually rewards.
 
 ## What it does
 
-Point it at a SwiftUI/UIKit codebase (or just describe your app) and ask for an ADA review. The skill:
+Point it at a SwiftUI/UIKit codebase (or just describe your app) and ask for an Apple Design Award review. The skill:
 
 1. **Maps your app** — scope, platforms, and which Apple frameworks you use.
 2. **Loads the knowledge base** — Apple's verbatim criteria, winners by category, the recurring
    patterns, and the anti-patterns that keep apps out of contention.
-3. **Picks your "category bet"** — the one ADA category your app is or could be *extraordinary* in.
+3. **Picks your "category bet"** — the one Apple Design Award category your app is or could be *extraordinary* in.
 4. **Scores all 6 criteria 0–3** with concrete evidence (`file:line`) and the highest-leverage fix.
 5. **Flags anti-patterns** that cap your score (generic UI, jank, dark patterns, accessibility-as-
    afterthought, …).
@@ -52,9 +52,9 @@ In Claude Code, just ask in natural language:
 
 or point it at a project:
 
-> Run an ADA readiness review on ~/Projects/MyApp — is it award-worthy?
+> Run an Apple Design Award readiness review on ~/Projects/MyApp — is it award-worthy?
 
-The skill triggers on mentions of "Apple Design Award", "ADA", "award-worthy", "design award
+The skill triggers on mentions of "Apple Design Award", "award-worthy", "design award
 readiness", or a high-bar craft/polish review.
 
 ## Repository layout
@@ -62,7 +62,7 @@ readiness", or a high-bar craft/polish review.
 ```
 SKILL.md                         # the skill: triggers, review workflow, output format
 references/
-  ├── ada-knowledge-base.md      # criteria, winners 2019–2026, patterns, anti-patterns, sources
+  ├── apple-design-award-knowledge-base.md      # criteria, winners 2019–2026, patterns, anti-patterns, sources
   ├── reviewer-checklist.md      # checkable signals per criterion + cross-cutting gate
   └── scoring-rubric.md          # the 0–3 rubric + "category bet" method
 ```
@@ -78,7 +78,7 @@ reflects Apple's published lists through the 2026 cycle (compiled 2026-06-11).
 
 Apple Design Awards ([official](https://developer.apple.com/design/awards/)) and Apple Newsroom
 announcements 2019–2026. Full source list in
-[`references/ada-knowledge-base.md`](references/ada-knowledge-base.md).
+[`references/apple-design-award-knowledge-base.md`](references/apple-design-award-knowledge-base.md).
 
 ## License
 

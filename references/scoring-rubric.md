@@ -1,4 +1,4 @@
-# ADA Scoring Rubric
+# Apple Design Award Scoring Rubric
 
 ## Per-criterion scale (0–3)
 

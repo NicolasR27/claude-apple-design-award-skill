@@ -1,6 +1,6 @@
-# ADA Reviewer Checklist
+# Apple Design Award Reviewer Checklist
 
-Binary, observable signals a reviewer (human or agent) can check to predict ADA-worthiness. Use these
+Binary, observable signals a reviewer (human or agent) can check to predict Apple Design Award–worthiness. Use these
 to assign the 0–3 scores in `scoring-rubric.md`. Cite `file:line` for code-derived findings.
 
 ## Inclusivity

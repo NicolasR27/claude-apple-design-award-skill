@@ -1,6 +1,6 @@
 ---
 name: apple-design-award
-description: Coach an iOS/iPadOS/macOS/watchOS/visionOS app toward Apple Design Award quality. Reviews code and product against the 6 official ADA criteria (Inclusivity, Delight & Fun, Interaction, Social Impact, Visuals & Graphics, Innovation) using patterns distilled from real ADA winners, then returns a scored gap report and prioritized action plan. Use when the user mentions Apple Design Award, ADA, "award-worthy", design award readiness, or wants a polish/craft review against Apple's bar.
+description: Coach an iOS/iPadOS/macOS/watchOS/visionOS app toward Apple Design Award quality. Reviews code and product against the 6 official Apple Design Award criteria (Inclusivity, Delight & Fun, Interaction, Social Impact, Visuals & Graphics, Innovation) using patterns distilled from real Apple Design Award winners, then returns a scored gap report and prioritized action plan. Use when the user mentions Apple Design Award, "award-worthy", design award readiness, or wants a polish/craft review against Apple's bar.
 license: MIT
 metadata:
   author: Nicolas Rios
@@ -11,8 +11,8 @@ metadata:
 
 ## Overview
 
-This skill reviews an Apple-platform app against the **6 official Apple Design Award (ADA)
-criteria** and, more importantly, against the **empirical patterns shared by real ADA winners
+This skill reviews an Apple-platform app against the **6 official Apple Design Award
+criteria** and, more importantly, against the **empirical patterns shared by real Apple Design Award winners
 2019–2026**. It is not a generic HIG linter — it is a craft coach calibrated to the bar Apple
 actually rewards.
 
@@ -28,10 +28,10 @@ gives a prioritized action plan to close the gap to award-worthy.
 
 ## When this skill activates
 
-- The user mentions "Apple Design Award", "ADA", "design award", "award-worthy", "make this
-  award-winning", or asks whether an app could win/contend for an ADA.
+- The user mentions "Apple Design Award", "design award", "award-worthy", "make this
+  award-winning", or asks whether an app could win/contend for an Apple Design Award.
 - The user wants a high-bar craft / polish / design review beyond basic HIG compliance.
-- The user is prioritizing what to polish before a launch, a featuring pitch, or an ADA submission.
+- The user is prioritizing what to polish before a launch, a featuring pitch, or an Apple Design Award submission.
 - The user asks "what do winning apps have in common" / "what would Apple's judges think of this".
 
 ## Review workflow
@@ -54,7 +54,7 @@ Establish what you're reviewing before judging it:
 
 ### Step 2 — Load reference materials
 Read the three reference files before scoring (do not score from memory):
-- `references/ada-knowledge-base.md` — the 6 criteria (Apple's verbatim wording), winners by
+- `references/apple-design-award-knowledge-base.md` — the 6 criteria (Apple's verbatim wording), winners by
   category 2019–2026, the Tier 1/2/3 cross-cutting patterns, and the anti-pattern list.
 - `references/reviewer-checklist.md` — the binary, checkable signals grouped by criterion + the
   cross-cutting gate.
@@ -62,7 +62,7 @@ Read the three reference files before scoring (do not score from memory):
   scores into a verdict.
 
 ### Step 3 — Identify the category bet
-Pick the **one** ADA category this app is or could be *extraordinary* in (its strongest, most
+Pick the **one** Apple Design Award category this app is or could be *extraordinary* in (its strongest, most
 differentiated dimension). State why. The action plan will concentrate firepower here, because
 winners win on one signature dimension, not on being uniformly good.
 
@@ -84,7 +84,7 @@ out of contention.
 Produce the report in exactly this structure:
 
 ```
-# ADA Readiness Review — <App Name>
+# Apple Design Award Readiness Review — <App Name>
 
 **Verdict:** <one line — e.g. "Strong contender in Interaction; two gating anti-patterns to fix first.">
 **Category bet:** <criterion> — <why this is the app's best shot>
@@ -123,7 +123,7 @@ Produce the report in exactly this structure:
 
 ## Resources
 
-- `references/ada-knowledge-base.md` — criteria, winners 2019–2026, patterns, anti-patterns, sources
+- `references/apple-design-award-knowledge-base.md` — criteria, winners 2019–2026, patterns, anti-patterns, sources
 - `references/reviewer-checklist.md` — checkable signals per criterion + cross-cutting gate
 - `references/scoring-rubric.md` — 0–3 rubric + category-bet method
 - Apple Design Awards (official): https://developer.apple.com/design/awards/
