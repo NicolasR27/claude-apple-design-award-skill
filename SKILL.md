@@ -69,26 +69,36 @@ Read the three reference files before scoring (do not score from memory):
 how an app *feels in the hand* — interaction, animation, responsiveness, haptics, and accessibility
 *as actually experienced*. None of that is provable from source. Build it and drive it.
 
-Use **XcodeBuildMCP** (preferred over raw `xcodebuild`):
+Use **XcodeBuildMCP** (preferred over raw `xcodebuild`). The happy path is short:
 1. `session_show_defaults` → if project/scheme/simulator aren't set, `discover_projs` / `list_schemes` /
-   `list_sims` and `session_set_defaults`. Then `build_run_sim` to launch on a booted simulator.
+   `list_sims` and `session_set_defaults`. Then `build_run_sim` to launch on a booted simulator. (One-time
+   setup, then just `build_run_sim` with no args each run.)
 2. **Read the accessibility tree** with `snapshot_ui`. This is the primary lens — it returns the live
    accessibility hierarchy (labels, traits, frames, actions). Two things at once:
-   - It is *the only way to drive the UI programmatically* — every `tap`/`swipe`/`type` targets an
+   - It is *the only way to drive the UI programmatically* — every `tap`/`swipe`/`type_text` targets an
      element by its accessibility identifier or frame from this snapshot.
    - It is *also the audit*. **An element missing from the snapshot, or present with no label/role, is
      invisible to VoiceOver AND untappable by automation — the same defect.** This is the load-bearing
      insight: accessibility is not a separate checklist item you read off the code; it is the interface
      through which the app is both *used by assistive tech* and *tested here*. An app you cannot drive
      via `snapshot_ui` is, by that very fact, failing Inclusivity.
+
+   *`snapshot_ui`/`tap`/`swipe` are XcodeBuildMCP's **UI-automation** tools, which aren't enabled in the
+   default profile. If they're missing, enable them (`XCODEBUILDMCP_GROUP_UI_AUTOMATION=true`, see
+   xcodebuildmcp.com/docs/configuration) — or fall back to a screenshot-only review and note that
+   interaction/accessibility couldn't be driven.*
 3. **Capture visuals** with `screenshot` at each key screen — for Visuals & Graphics (identity,
    cohesion, empty/loading/dark-mode states) and for the report's evidence.
 4. **Drive the core flow** the app is built around (the "category bet" flow): walk onboarding, perform
    the primary task, trigger the intended delight moment. Observe latency, animation smoothness, and
    whether feedback is immediate. Use `record_sim_video` for an animation/transition-heavy flow.
-5. **Exercise accessibility in practice** where supported: re-`snapshot_ui` after toggling state to
-   confirm labels update; check Dynamic Type and dark mode via simulator appearance settings; confirm
-   no control is reachable only by an unlabeled tap.
+5. **Exercise accessibility in practice.** Toggle environment with `xcrun simctl` (Bash) — there's no
+   MCP tool for these — then re-`screenshot`/`snapshot_ui` to confirm the app adapts:
+   - Dark mode: `xcrun simctl ui booted appearance dark` (and `light` to restore).
+   - Largest Dynamic Type: `xcrun simctl ui booted content_size accessibility-extra-extra-extra-large`
+     (`medium` to restore) — confirm no truncation/overlap.
+   - Re-`snapshot_ui` after a state change to confirm labels update, and confirm no control is reachable
+     only by an unlabeled coordinate tap.
 
 Record runtime findings as evidence with the same rigor as code: name the screen, the element (its
 accessibility id/label or "UNLABELED"), and what you observed.

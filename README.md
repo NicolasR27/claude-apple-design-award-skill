@@ -8,6 +8,21 @@ report and a prioritized action plan to get it closer to award-worthy.
 It's not a generic Human Interface Guidelines linter — it's a craft coach calibrated to the bar Apple
 actually rewards.
 
+## Quick start
+
+```sh
+# 1. Install (once)
+git clone https://github.com/NicolasR27/claude-apple-design-award-skill.git ~/.claude/skills/apple-design-award
+```
+
+Then in Claude Code, from your app's folder, just ask:
+
+> Review my app against the Apple Design Awards.
+
+That's it — the skill maps the app, builds and drives it on a simulator, scores all 6 criteria, and
+hands back a prioritized action plan. (For the live-driving part, have
+[XcodeBuildMCP](https://xcodebuildmcp.com) installed; without it the review still runs from code alone.)
+
 ## What it does
 
 Point it at a SwiftUI/UIKit codebase (or just describe your app) and ask for an Apple Design Award review. The skill:
