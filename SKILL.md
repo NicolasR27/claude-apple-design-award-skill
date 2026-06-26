@@ -48,18 +48,37 @@ label it as one rather than dressing it up as measurement.
 Follow these steps in order. Be concrete and evidence-based — cite `file:line` whenever a finding
 comes from code.
 
-### Step 1 — Understand the app
-Establish what you're reviewing before judging it:
+### Step 1 — Understand the app (including intent — ask, don't assume)
+Establish what you're reviewing, and **what it's trying to be**, before judging it. The single most
+common way this review goes wrong is passing subjective verdicts ("no delight moment", "no reason to
+return", "nothing that justifies a native app over a notes file") *without knowing the app's purpose*.
+Those are often fair observations — but only after you know the intent. Detect context first.
+
+**Always ask the developer a few short intake questions** (even when pointed at a full codebase — the
+code tells you *what* is built, not *what it's for* or *who it's for*). Ask before scoring; keep it to
+~4–6 questions and offer your own inferred answer so they can just confirm:
+- **Purpose:** in one sentence, what does this app do and what's it for?
+- **Audience:** who is it for, and in what situation/frequency do they use it (daily ritual, occasional
+  tool, one-shot utility)? — this directly governs whether "reason to return" is even a relevant bar.
+- **The signature moment:** what's the one moment or feature you most want users to love?
+- **Stage & scope:** is this shipping, in progress, or a prototype? Is the narrow scope deliberate?
+- **Known constraints:** anything intentionally minimal, stubbed, or out of scope for this review?
+- **What you want from this review:** a brutal ADA-bar critique, or prioritized next steps?
+
+If the developer can't answer right now, infer the intent from the code/README, **state your inferred
+purpose and audience explicitly at the top of the review, and label every subjective judgment as
+conditional on that assumption** — never present a vacuum-judgment as fact.
+
+Then map the app:
 - If pointed at a codebase: use Glob/Grep/Read to map scope, platforms shipped (iOS/iPadOS/macOS/
   watchOS/tvOS/visionOS), navigation style, and which Apple frameworks are used (search for
   `CoreML`, `MetalFX`, `RealityKit`, `Core Haptics`/`CHHapticEngine`, `PHASE`/Spatial Audio,
   `PencilKit`, `App Intents`, `WidgetKit`, `ActivityKit`, `HealthKit`, `Vision`, `FoundationModels`,
   accessibility modifiers like `.accessibilityLabel`, `Dynamic Type`/`.font(.body)` vs hard-coded
   sizes, `reduceMotion`, etc.).
-- If given only a description: ask for (or infer) the app's single-sentence purpose, target
-  platforms, the standout technical feature, and one screenshot/flow if available.
 - Determine the **focused scope**: what is the one thing this app does? (Breadth-without-depth is an
-  anti-pattern — see KB Section 4.)
+  anti-pattern — see KB Section 4 — but a *deliberately* narrow tool is not bloat; the intake answers
+  tell you which.)
 - Note what's needed to **run** it: the Xcode project/workspace, scheme, and a target simulator. You'll
   build and drive the live app in Step 3 — static reading alone cannot judge interaction, animation,
   responsiveness, or accessibility-in-practice, which are the heart of an Apple Design Award.
@@ -153,6 +172,7 @@ Produce the report in exactly this structure:
 # Apple Design Award Readiness Review — <App Name>
 
 **Verdict:** <one line — e.g. "Strong on Interaction; two gating accessibility defects to fix first.">
+**Purpose & audience:** <the app's intent as the developer stated it — or "inferred (unconfirmed): …" if they didn't. All subjective judgments below are read against this.>
 **Category bet:** <criterion> — <why this is the app's best shot>
 **Runtime:** <"Driven live on <simulator> — flows walked: …" | "Not run (<reason>); scores below are static-only and runtime-unverified.">
 **Overall:** <sum>/18  ( ≥1 on all six, no 0s = contention floor — a rough temperature, not odds of winning )
@@ -194,6 +214,12 @@ explicitly framed as a judgment call, not a forecast of whether it wins.>
 - Apple's actual judging is **private and subjective**. This skill encodes a *curated approximation*
   of traits common to past winners, not an official rubric or a prediction of a win. Never present the
   score as odds of winning — if the user reads it that way, correct it.
+- **Never judge intent in a vacuum.** Verdicts about purpose, delight, or "reason to return" require
+  knowing what the app is *for* — gather that in Step 1 before scoring. A bare "this doesn't justify a
+  native app" with no grasp of the developer's goal is exactly the failure this skill must avoid: it
+  reads as lazy, demoralizing, and frequently wrong. Ask first; if you must infer, say so and frame the
+  judgment as conditional. (Observed defects — missing labels, no empty/error states — stand on their
+  own and don't need this caveat; intent-dependent opinions do.)
 - **Where the value actually is:** the `[observed]` findings (missing labels, undrivable flows, dropped
   frames, taps-to-value, broken Dynamic Type/dark mode) are verifiable and worth acting on regardless of
   any award. The `[judgment]` scores are one informed opinion about craft — useful direction, not truth.
