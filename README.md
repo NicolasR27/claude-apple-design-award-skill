@@ -15,6 +15,12 @@ actually rewards.
 > award criteria.** The objective findings are the product; the 0–3 criterion scores are an informed
 > read on top of them, each tagged `[observed]` (a fact) or `[judgment]` (an opinion).
 
+> **It asks before it judges.** A craft review that doesn't know what your app is *for* — or who it's
+> for, or how often it's meant to be used — produces lazy verdicts ("no reason to return", "nothing a
+> notes file couldn't do"). So the skill gathers your intent up front and reads every subjective call
+> against it. Observed defects stand on their own; opinions are anchored to what you were actually
+> building.
+
 ## Quick start
 
 ```sh
@@ -26,15 +32,19 @@ Then in Claude Code, from your app's folder, just ask:
 
 > Review my app against the Apple Design Awards.
 
-That's it — the skill maps the app, builds and drives it on a simulator, scores all 6 criteria, and
-hands back a prioritized action plan. (For the live-driving part, have
-[XcodeBuildMCP](https://xcodebuildmcp.com) installed; without it the review still runs from code alone.)
+It'll ask a couple of quick questions about what the app is for, then map it, build and drive it on a
+simulator, score all 6 criteria, and hand back a prioritized action plan. (For the live-driving part,
+have [XcodeBuildMCP](https://xcodebuildmcp.com) installed; without it the review still runs from code
+alone.)
 
 ## What it does
 
 Point it at a SwiftUI/UIKit codebase (or just describe your app) and ask for an Apple Design Award review. The skill:
 
-1. **Maps your app** — scope, platforms, and which Apple frameworks you use.
+1. **Asks what your app is for, then maps it** — a few short intake questions (purpose, audience and how
+   often they use it, the one moment you want them to love, stage, and what kind of review you want),
+   then scope, platforms, and which Apple frameworks you use. The code says *what* is built; only you
+   can say *what it's for* — and that's what keeps the judgments honest.
 2. **Loads the knowledge base** — Apple's verbatim criteria, winners by category, the recurring
    patterns, and the anti-patterns that keep apps out of contention.
 3. **Builds and drives the running app** — launches it on a simulator and walks the real UI through its
@@ -43,8 +53,8 @@ Point it at a SwiftUI/UIKit codebase (or just describe your app) and ask for an 
    accessibility tree is the same interface VoiceOver uses to *read* the app and the reviewer uses to
    *drive* it — so an inaccessible app is, by construction, an untestable one.)
 4. **Picks your "category bet"** — the one Apple Design Award category your app is or could be *extraordinary* in.
-5. **Scores all 6 criteria 0–3** with concrete evidence (`file:line` + on-screen observations) and the
-   highest-leverage fix.
+5. **Scores all 6 criteria 0–3** with concrete evidence (`file:line` + on-screen observations), each
+   tagged `[observed]` or `[judgment]`, plus the highest-leverage fix.
 6. **Flags anti-patterns** that cap your score (generic UI, jank, dark patterns, accessibility-as-
    afterthought, …).
 7. **Outputs an action plan** ordered as: clear the gates → make one thing extraordinary → round up
@@ -90,7 +100,8 @@ or point it at a project:
 > Run an Apple Design Award readiness review on ~/Projects/MyApp — is it award-worthy?
 
 The skill triggers on mentions of "Apple Design Award", "award-worthy", "design award
-readiness", or a high-bar craft/polish review.
+readiness", or a high-bar craft/polish review. It opens with a short intent check — answer it, or tell
+it to infer and proceed (it'll state its assumptions and flag the judgments as conditional).
 
 ### What you'll need
 
@@ -107,15 +118,18 @@ readiness", or a high-bar craft/polish review.
 
 ### What you get back
 
-A single report: a one-line verdict, your **category bet**, a **Runtime:** line (what was driven, or why
-not), a 6-criterion **scorecard** (0–3 with `file:line` + on-screen evidence), any **anti-patterns** that
-cap a score, and a **prioritized action plan** (clear the gates → make one thing extraordinary → round up
-the floor). The review is read-only; if you then ask it to *implement* a fix, it'll edit the code.
+A single report that opens with a one-line verdict, a **Purpose & audience** line (your stated intent,
+or its inferred guess if you didn't give one — every judgment is read against it), your **category
+bet**, and a **Runtime:** line (what was driven, or why not). Then a "what was observed" facts section,
+a 6-criterion **scorecard** (0–3 with `file:line` + on-screen evidence, each tagged `[observed]` or
+`[judgment]`), any **anti-patterns** that cap a score, and a **prioritized action plan** (clear the
+gates → make one thing extraordinary → round up the floor). The review is read-only; if you then ask it
+to *implement* a fix, it'll edit the code.
 
 ### Tips
 
-- Tell it your app's **one-sentence purpose** and the **standout feature** up front — it sharpens the
-  category bet.
+- The intake takes ten seconds — answering it (rather than telling it to infer) sharpens the category
+  bet and keeps the subjective scores fair to what you were actually building.
 - Ask it to **focus on one criterion** (e.g. "just audit Inclusivity") for a faster, deeper pass.
 - Ask it to **walk a specific flow** (onboarding, the delight moment) if that's what you're polishing.
 
